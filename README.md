@@ -9,7 +9,14 @@ Advanced would be adding a history of what drills I have done. Maybe setting a f
 - [x] Appbar
     - [x] Title
 - [ ] List of interactable widgets in a single column
-    - [ ] Each widget goes to a descriptions of exercises?
+    - [x] Each widget goes to a descriptions of exercises?
     - [ ] Button that says start that goes through exercises
     - [ ] Simple interaction to go thru drills
 - [ ] a button at the top to choose these widgets at random
+    - [x] Choose individual
+    - [ ] Choose multiple? 
+    - [ ] Shuffle?
+- [ ] Editing
+    - [ ] Button to add
+    - [ ] Button to delete
+    - [ ] Button to edit drills
