@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+
 void main() {
   runApp(MyApp());
 }
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
           title: const Text('Pathway Drills'),
         ),
         body: DrillListScreen(
-          drillContainers: [
+          drillContainers: [ // TODO: HIVE Setup and saving drills on local storage
             DrillContainer(
               drillName: Text('Exercise 1'),
               drillList: Text('1. Push Ups\n2. Sit Ups\n3. Squats\n'),
@@ -38,6 +39,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// [x]: Create list of interactable widgets in a single column
+
 class DrillListScreen extends StatefulWidget {
   final List<DrillContainer> drillContainers;
 
@@ -50,6 +53,7 @@ class DrillListScreen extends StatefulWidget {
 class _DrillListScreenState extends State<DrillListScreen> {
   // Store all DrillContainers in a list
 
+  // TODO: Choose random sets of drills button
   void openRandomContainer() {
     if (widget.drillContainers.isEmpty) return;
 
@@ -101,6 +105,10 @@ class _DrillListScreenState extends State<DrillListScreen> {
   }
 }
 
+// TODO: Create 'Add Drill' Button 
+// TODO: Create 'Remove Drill' Button 
+// TODO: Create 'Edit Drill' Button 
+
 class DrillContainer extends StatelessWidget {
   final Widget drillName;
   final Widget drillList;
@@ -147,3 +155,5 @@ class DrillContainer extends StatelessWidget {
     );
   }
 }
+
+// TODO: Create tags to sort and search by for each drill
