@@ -1,9 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'models/drill.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +26,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// [x]: Create 'Add Drill' Button 
-// [x]: Create 'Remove Drill' Button 
+// [x]: Create 'Add Drill' Button
+// [x]: Create 'Remove Drill' Button
 // [x]: Create 'Edit Drill' Button
 
 // ======================
@@ -43,16 +41,30 @@ class DrillListScreen extends StatefulWidget {
 }
 
 class _DrillListScreenState extends State<DrillListScreen> {
+  late Box<Drill> drillBox;
   late List<Drill> drills;
 
   @override
   void initState() {
     super.initState();
-    drills = [
-      Drill(name: 'Exercise 1', list: '1. Push Ups\n2. Sit Ups\n3. Squats'),
-      Drill(name: 'Exercise 2', list: '1. Burpees\n2. Jumping Jacks\n3. Plank'),
-      Drill(name: 'Exercise 3', list: '1. Pull Ups\n2. Lunges\n3. Crunches'),
-    ];
+
+    drillBox = Hive.box<Drill>('drills');
+
+    // Load drills from box, or create defaults if empty
+    if (drillBox.isEmpty) {
+      final defaultDrills = [
+        Drill(name: 'Exercise 1', list: '1. Push Ups\n2. Sit Ups\n3. Squats'),
+        Drill(
+          name: 'Exercise 2',
+          list: '1. Burpees\n2. Jumping Jacks\n3. Plank',
+        ),
+        Drill(name: 'Exercise 3', list: '1. Pull Ups\n2. Lunges\n3. Crunches'),
+      ];
+
+      drillBox.addAll(defaultDrills);
+    }
+
+    drills = drillBox.values.toList();
   }
 
   // ======================
@@ -111,15 +123,18 @@ class _DrillListScreenState extends State<DrillListScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (nameController.text.isEmpty || listController.text.isEmpty) return;
+              if (nameController.text.isEmpty || listController.text.isEmpty)
+                return;
+
+              final newDrill = Drill(
+                name: nameController.text,
+                list: listController.text,
+              );
+
+              drillBox.add(newDrill);
 
               setState(() {
-                drills.add(
-                  Drill(
-                    name: nameController.text,
-                    list: listController.text,
-                  ),
-                );
+                drills = drillBox.values.toList();
               });
 
               Navigator.pop(context);
@@ -135,10 +150,9 @@ class _DrillListScreenState extends State<DrillListScreen> {
   // EDIT DRILL
   // ======================
   void editDrill(int index) {
-    final nameController =
-        TextEditingController(text: drills[index].name);
-    final listController =
-        TextEditingController(text: drills[index].list);
+    final drill = drills[index];
+    final nameController = TextEditingController(text: drill.name);
+    final listController = TextEditingController(text: drill.list);
 
     showDialog(
       context: context,
@@ -165,10 +179,14 @@ class _DrillListScreenState extends State<DrillListScreen> {
           ),
           ElevatedButton(
             onPressed: () {
+              drill.name = nameController.text;
+              drill.list = listController.text;
+              drill.save(); // Save changes in Hive
+
               setState(() {
-                drills[index].name = nameController.text;
-                drills[index].list = listController.text;
+                drills = drillBox.values.toList();
               });
+
               Navigator.pop(context);
             },
             child: const Text('Save'),
@@ -215,8 +233,12 @@ class _DrillListScreenState extends State<DrillListScreen> {
                 return DrillContainer(
                   drill: drill,
                   onEdit: () => editDrill(index),
-                  onRemove: () {
-                    setState(() => drills.removeAt(index));
+                  onRemove: () async {
+                    await drills[index].delete(); // remove from Hive
+
+                    setState(() {
+                      drills = drillBox.values.toList(); // refresh UI
+                    });
                   },
                 );
               },
