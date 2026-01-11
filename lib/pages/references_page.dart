@@ -93,10 +93,8 @@ class _ReferencesPageState extends State<ReferencesPage> {
                 List<Reference> filtered;
 
                 if (selectedTags.isEmpty) {
-                  // No tags selected → use all references
                   filtered = List.from(references);
                 } else {
-                  // Filter by all selected tags
                   filtered = references
                       .where(
                         (r) => selectedTags.every((t) => r.tags.contains(t)),
@@ -104,7 +102,7 @@ class _ReferencesPageState extends State<ReferencesPage> {
                       .toList();
                 }
 
-                Navigator.pop(context); // close tag picker
+                Navigator.pop(context);
 
                 if (filtered.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -118,7 +116,6 @@ class _ReferencesPageState extends State<ReferencesPage> {
                 final random = Random();
                 final reference = filtered[random.nextInt(filtered.length)];
 
-                // Show the selected reference
                 showDialog(
                   context: context,
                   builder: (_) {
@@ -162,9 +159,6 @@ class _ReferencesPageState extends State<ReferencesPage> {
     );
   }
 
-  // ======================
-  // ADD REFERENCE
-  // ======================
   void addReference() {
     final nameController = TextEditingController();
     final descriptionController = TextEditingController();
@@ -174,14 +168,14 @@ class _ReferencesPageState extends State<ReferencesPage> {
       context: context,
       builder: (_) {
         final screenWidth = MediaQuery.of(context).size.width;
-        final dialogWidth = screenWidth * 0.8; // 80% of screen width
+        final dialogWidth = screenWidth * 0.8; 
 
         return AlertDialog(
           title: const Text('Add Reference'),
           content: SizedBox(
             width: dialogWidth,
             child: Column(
-              mainAxisSize: MainAxisSize.min, // height adapts to content
+              mainAxisSize: MainAxisSize.min, 
               children: [
                 TextField(
                   controller: nameController,
@@ -241,9 +235,6 @@ class _ReferencesPageState extends State<ReferencesPage> {
     );
   }
 
-  // ======================
-  // EDIT REFERENCE
-  // ======================
   void editReference(int index) {
     final reference = references[index];
 
@@ -259,14 +250,14 @@ class _ReferencesPageState extends State<ReferencesPage> {
       context: context,
       builder: (_) {
         final screenWidth = MediaQuery.of(context).size.width;
-        final dialogWidth = screenWidth * 0.8; // 80% of device width
+        final dialogWidth = screenWidth * 0.8; 
 
         return AlertDialog(
           title: const Text('Edit Reference'),
           content: SizedBox(
             width: dialogWidth,
             child: Column(
-              mainAxisSize: MainAxisSize.min, // flexible height
+              mainAxisSize: MainAxisSize.min, 
               children: [
                 TextField(
                   controller: nameController,
@@ -322,9 +313,6 @@ class _ReferencesPageState extends State<ReferencesPage> {
     );
   }
 
-  // ======================
-  // DELETE REFERENCE
-  // ======================
   void removeReference(int index) {
     references[index].delete();
 
@@ -334,9 +322,6 @@ class _ReferencesPageState extends State<ReferencesPage> {
     });
   }
 
-  // ======================
-  // UI
-  // ======================
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -406,7 +391,7 @@ class ReferenceContainer extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final screenWidth = MediaQuery.of(context).size.width;
-        final dialogWidth = screenWidth * 0.85; // 80% of device width
+        final dialogWidth = screenWidth * 0.85; 
 
         showDialog(
           context: context,
@@ -415,24 +400,22 @@ class ReferenceContainer extends StatelessWidget {
             content: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: dialogWidth),
               child: Column(
-                mainAxisSize: MainAxisSize.min, // flexible height
+                mainAxisSize: MainAxisSize.min, 
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Tags on top
                   Wrap(
                     spacing: 6,
                     runSpacing: 6,
                     children: reference.tags
                         .map(
                           (t) => Chip(
-                            label: Text(t), // default size
+                            label: Text(t), 
                             backgroundColor: Colors.orange.shade100,
                           ),
                         )
                         .toList(),
                   ),
                   const SizedBox(height: 12),
-                  // Description
                   Text(reference.description),
                 ],
               ),

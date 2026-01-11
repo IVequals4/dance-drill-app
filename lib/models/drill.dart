@@ -1,10 +1,7 @@
 import 'package:hive/hive.dart';
 
-part 'drill.g.dart';  // This tells Hive where to generate the adapter
+part 'drill.g.dart';  
 
-// ======================
-// DATA MODEL
-// ======================
 @HiveType(typeId: 0)
 class Drill extends HiveObject {
   @HiveField(0)

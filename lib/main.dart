@@ -8,11 +8,11 @@ import 'models/reference.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Hive.initFlutter(); // initialize Hive
-  Hive.registerAdapter(DrillAdapter()); // register Drill adapter
+  await Hive.initFlutter(); 
+  Hive.registerAdapter(DrillAdapter()); 
   Hive.registerAdapter(ReferenceAdapter());
 
-  await Hive.openBox<Drill>('drills'); // open a box to store drills
+  await Hive.openBox<Drill>('drills'); 
   await Hive.openBox<Reference>('references');
 
   runApp(const MyApp());

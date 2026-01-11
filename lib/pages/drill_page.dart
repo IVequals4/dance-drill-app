@@ -9,9 +9,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 // [x]: Create 'Remove Drill' Button
 // [x]: Create 'Edit Drill' Button
 
-// ======================
-// MAIN SCREEN
-// ======================
 class DrillListPage extends StatefulWidget {
   const DrillListPage({super.key});
 
@@ -29,7 +26,6 @@ class _DrillListPageState extends State<DrillListPage> {
 
     drillBox = Hive.box<Drill>('drills');
 
-    // Load drills from box, or create defaults if empty
     if (drillBox.isEmpty) {
       final defaultDrills = [
         Drill(name: 'Exercise 1', list: '1. Push Ups\n2. Sit Ups\n3. Squats'),
@@ -46,9 +42,6 @@ class _DrillListPageState extends State<DrillListPage> {
     drills = drillBox.values.toList();
   }
 
-  // ======================
-  // RANDOM DRILL
-  // ======================
   void openRandomContainer() {
     if (drills.isEmpty) return;
 
@@ -70,9 +63,6 @@ class _DrillListPageState extends State<DrillListPage> {
     );
   }
 
-  // ======================
-  // ADD DRILL
-  // ======================
   void addDrill() {
     final nameController = TextEditingController();
     final listController = TextEditingController();
@@ -125,9 +115,6 @@ class _DrillListPageState extends State<DrillListPage> {
     );
   }
 
-  // ======================
-  // EDIT DRILL
-  // ======================
   void editDrill(int index) {
     final drill = drills[index];
     final nameController = TextEditingController(text: drill.name);
@@ -160,7 +147,7 @@ class _DrillListPageState extends State<DrillListPage> {
             onPressed: () {
               drill.name = nameController.text;
               drill.list = listController.text;
-              drill.save(); // Save changes in Hive
+              drill.save(); 
 
               setState(() {
                 drills = drillBox.values.toList();
@@ -175,9 +162,6 @@ class _DrillListPageState extends State<DrillListPage> {
     );
   }
 
-  // ======================
-  // UI
-  // ======================
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,10 +197,10 @@ class _DrillListPageState extends State<DrillListPage> {
                   drill: drill,
                   onEdit: () => editDrill(index),
                   onRemove: () async {
-                    await drills[index].delete(); // remove from Hive
+                    await drills[index].delete(); 
 
                     setState(() {
-                      drills = drillBox.values.toList(); // refresh UI
+                      drills = drillBox.values.toList(); 
                     });
                   },
                 );
@@ -229,9 +213,6 @@ class _DrillListPageState extends State<DrillListPage> {
   }
 }
 
-// ======================
-// DRILL CARD
-// ======================
 class DrillContainer extends StatelessWidget {
   final Drill drill;
   final VoidCallback onEdit;
